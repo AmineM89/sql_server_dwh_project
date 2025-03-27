@@ -12,7 +12,6 @@ Warning:
 	this script will overwrite all the existing records of tables in the bronze layer
 */
 
-
 CREATE OR ALTER PROCEDURE bronze.load_bronze AS
 BEGIN
 
@@ -39,12 +38,14 @@ BEGIN
 
 		PRINT ''
 
-		PRINT '>> Loading cust_info table from CRM source into the bronze layer...';
+		PRINT '--- Loading cust_info table from CRM source into the bronze layer ---';
 		SELECT @start_time = GETDATE();
 
+		PRINT '>> Truncate bronze.crm_cust_info...';
 		-- truncate the data already loaded to avoid incremanting the table (Full Load)
 		TRUNCATE TABLE bronze.crm_cust_info
 
+		PRINT '>> Inserting data into bronze.crm_cust_info...';
 		-- bulk insert into crm_cust_info table from its corresponding csv file
 		BULK INSERT bronze.crm_cust_info
 		FROM 'C:\Projects\Datawarehouse\sql-datawarehouse\datasets\source_crm\cust_info.csv'
@@ -60,13 +61,15 @@ BEGIN
 
 		PRINT '___________________________________________________________________________';
 		PRINT ''
-		PRINT '>> Loading prd_info table from CRM source into the bronze layer...';
+		PRINT '--- Loading prd_info table from CRM source into the bronze layer ---';
 		SELECT @start_time = GETDATE();
 
 		-- drop the data already loaded to avoid incremanting the table (Full Load)
+		PRINT '>> Truncate bronze.crm_prd_info...';
 		TRUNCATE TABLE bronze.crm_prd_info
 
 		-- bulk insert into crm_prd_info table from its corresponding csv file
+		PRINT '>> Inserting data into bronze.crm_prd_info...';
 		BULK INSERT bronze.crm_prd_info
 		FROM 'C:\Projects\Datawarehouse\sql-datawarehouse\datasets\source_crm\prd_info.csv'
 		WITH(
@@ -81,13 +84,16 @@ BEGIN
 
 		PRINT '___________________________________________________________________________';
 		PRINT ''
-		PRINT '>> Loading sales_details table from CRM source into the bronze layer...';
+		PRINT '--- Loading sales_details table from CRM source into the bronze layer ---';
 		SELECT @start_time = GETDATE();
 
 
 		-- drop the data already loaded to avoid incremanting the table (Full Load)
+		PRINT '>> Truncate bronze.crm_sales_details...';
 		TRUNCATE TABLE bronze.crm_sales_details
+
 		-- bulk insert into crm_sales_details table from its corresponding csv file
+		PRINT '>> Inserting data into bronze.crm_sales_details...';
 		BULK INSERT bronze.crm_sales_details
 		FROM 'C:\Projects\Datawarehouse\sql-datawarehouse\datasets\source_crm\sales_details.csv'
 		WITH(
@@ -106,13 +112,15 @@ BEGIN
 		PRINT '---------------------------------------------------------------------------';
 		PRINT ''
 
-		PRINT '>> Loading CUST_AZ12 table from ERP source into the bronze layer...';
+		PRINT '--- Loading CUST_AZ12 table from ERP source into the bronze layer ---';
 		SELECT @start_time = GETDATE();
 
 		-- drop the data already loaded to avoid incremanting the table (Full Load)
+		PRINT '>> Truncate bronze.erp_CUST_AZ12...';
 		TRUNCATE TABLE bronze.erp_CUST_AZ12
 
 		-- bulk insert into erp_CUST_AZ12s table from its corresponding csv file
+		PRINT '>> Inserting data into bronze.erp_CUST_AZ12...';
 		BULK INSERT bronze.erp_CUST_AZ12
 		FROM 'C:\Projects\Datawarehouse\sql-datawarehouse\datasets\source_erp\CUST_AZ12.csv'
 		WITH(
@@ -127,13 +135,15 @@ BEGIN
 		PRINT '___________________________________________________________________________';
 		Print ''
 
-		PRINT '>> Loading LOC_A101 table from ERP source into the bronze layer...';
+		PRINT '--- Loading LOC_A101 table from ERP source into the bronze layer ---';
 		SELECT @start_time = GETDATE();
 
 		-- drop the data already loaded to avoid incremanting the table (Full Load)
+		PRINT '>> Truncate bronze.erp_LOC_A101...';
 		TRUNCATE TABLE bronze.erp_LOC_A101
 
 		-- bulk insert into erp_CUST_AZ12s table from its corresponding csv file
+		PRINT '>> Inserting data into bronze.erp_LOC_A101...';
 		BULK INSERT bronze.erp_LOC_A101
 		FROM 'C:\Projects\Datawarehouse\sql-datawarehouse\datasets\source_erp\LOC_A101.csv'
 		WITH(
@@ -149,13 +159,15 @@ BEGIN
 		PRINT '___________________________________________________________________________';
 		Print '';
 
-		PRINT '>> Loading PX_CAT_G1V2 table from ERP source into the bronze layer...';
+		PRINT '--- Loading PX_CAT_G1V2 table from ERP source into the bronze layer ---';
 		SELECT @start_time = GETDATE();
 
 		-- drop the data already loaded to avoid incremanting the table (Full Load)
+		PRINT '>> Truncate bronze.erp_PX_CAT_G1V2...';
 		TRUNCATE TABLE bronze.erp_PX_CAT_G1V2
 
 		-- bulk insert into erp_CUST_AZ12s table from its corresponding csv file
+		PRINT '>> Inserting data into bronze.erp_PX_CAT_G1V2...';
 		BULK INSERT bronze.erp_PX_CAT_G1V2
 		FROM 'C:\Projects\Datawarehouse\sql-datawarehouse\datasets\source_erp\PX_CAT_G1V2.csv'
 		WITH(

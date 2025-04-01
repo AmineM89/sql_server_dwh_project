@@ -109,4 +109,5 @@ These validation scripts can be found in the **`test/`** folder.
 ✔️ **Error-handling mechanisms** for reliability.
 
 
-📌 **Author:** Amine Mohabeddine  
+## 📌 Contact & Socials
+- [LinkedIn](https://www.linkedin.com/in/aminem89/) ![linkedin-logo](https://github.com/user-attachments/assets/fcc95a13-c291-47e6-b48d-8de0ea25d342)

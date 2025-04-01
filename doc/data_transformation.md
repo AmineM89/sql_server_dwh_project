@@ -161,9 +161,9 @@ When integrating ERP data into CRM data, we noticed some conflict between `cst_g
 |cst_gndr  |GEN      |
 |----------|---------|
 |Male      |Male     |
-|❌Male    |❌Female|
+|Male❌    |Female❌|
 |Male      |n/a      |
-|❌Female  |❌Male  |
+|Female❌  |Male❌  |
 |Female     |Female  |
 |Female     |n/a     |
 |n/a        |Male    |

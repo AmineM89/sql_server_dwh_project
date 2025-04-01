@@ -33,74 +33,62 @@ The project follows the **Medallion Architecture**, structured as:
 - Views are created for BI consumption.
 - Indexed and optimized for fast querying.
 
-![My Image](doc/data_architecture.png)
+![Data Architecture](doc/data_architecture.png)
 
 ## 🛠️ Technologies Used
 - **Database:** Microsoft SQL Server
 - **Storage:** CSV files stored locally or in cloud storage
-- **Automation:**
-  - **SQL Server Agent** for scheduled executions.
+- **Automation:** **SQL Server Agent** for scheduled executions.
 
 ## 🔄 Data Transformations
-In this project many transformation was made for cleansing the silver layer:
-Remove duplicates
-Remove NULL values
-Data enrichment
-Data standardization
-Data normalization
-1. **Ingestion (Bronze Layer):**
-   - Load raw CSV files into staging tables.
-   - No transformations applied.
-2. **Cleansing (Silver Layer):**
-   - Standardize data types.
-   - Deduplicate records.
-   - Validate referential integrity.
-   - Apply business rules.
-3. **Aggregation & Integration (Gold Layer):**
-   - Create a **star schema** (fact & dimension tables).
-   - Implement indexing & optimization.
-   - Expose final data via **views** for reporting.
+Many transformation and cleansing technique were used in the project:
+- Remove duplicates
+- Data Filtering
+- Handeling missing data
+- Handeling invalid values
+- Handeling unwanted spaces
+- Data type casting
+- Data normalisation & standardization
+- Data enrichment
+- Derived columns
+- Data aggregation
+- Data integration
+
+All the transformation are detailed in doc/data_transformation.md
+
 
 ## 📊 Data Model
 - **Fact Table:** `fact_sales`
 - **Dimension Tables:**
   - `dim_customer`
   - `dim_product`
-  - `dim_date`
 - **Relationships:**
   - `fact_sales` links to `dim_customer` and `dim_product` via foreign keys.
-  - `dim_date` provides time-based aggregations.
+ 
+ ![Data Model](doc/star_model.png)
+
 
 ## 📝 Documentation & Project Management
-The project was managed using an **Agile methodology** with **Notion** to track:
-- **Data Architecture Diagrams** 📌
-- **Data Flow Diagrams** 🔄
-- **Data Catalog** 📚
-- **Naming Conventions** (`snake_case` for consistency) 🏷️
-- **Conceptual Model & Star Schema Design** 🌟
+- **Data Architecture Diagrams** 📌 : doc/data_architecture.png
+- **Data Flow Diagrams** 🔄 : doc/data_flow.png
+- **Data Catalog** 📚 : doc/data_catalog.md
+- **Naming Conventions** (`snake_case` for consistency) 🏷️ : doc/naming_convention.md
+- **Conceptual Model & Star Schema Design** 🌟 : doc/star_model.png
+The project was managed using an **Agile methodology** with **Notion** ([link for the Notion page](https://mewing-pyjama-a13.notion.site/SQL-Server-Data-Warehouse-Project-1be923a250a58037b793ca6330c2fd57)) 
 
 ## 🚀 Execution & Automation
 - **Stored Procedures** were used to load and transform data:
-  - `usp_load_bronze`
-  - `usp_load_silver`
+  - `bronze.load_bronze`
+  - `silver.load_silver`
   - Views created for **gold layer** reporting.
 - **Triggering ETL Process:**
-  - **SQL Server Agent** (if available) for scheduling.
-  - **PowerShell + Task Scheduler** as an alternative.
+  - **SQL Server Agent** for scheduling.
 
-## ⚡ Performance & Error Handling
-- **Performance Enhancements:**
-  - Bulk inserts for efficiency.
-  - Indexed fact & dimension tables.
-  - Pre-aggregated data for reporting.
-- **Error Handling Strategy:**
-  - Invalid records logged in an **error table**.
-  - Data failures are tracked with timestamps.
 
 ## ✅ Project Deliverables
 ✔️ Fully operational **ETL pipeline** in SQL Server.
 ✔️ **Star schema** for analytical reporting.
-✔️ Documented **data sources, transformations, and schema**.
+✔️ Documented **data sources, transformations, data flow, and schema**.
 ✔️ **Optimized performance** for large-scale processing.
 ✔️ **Error-handling mechanisms** for reliability.
 

@@ -110,4 +110,4 @@ These validation scripts can be found in the **`test/`** folder.
 
 
 ## 📌 Contact & Socials
-- [LinkedIn](https://www.linkedin.com/in/aminem89/) <img src=https://github.com/user-attachments/assets/fcc95a13-c291-47e6-b48d-8de0ea25d342  alt="LinkedIn Logo" width="30" />
+- [LinkedIn](https://www.linkedin.com/in/aminem89/) <img src=https://github.com/user-attachments/assets/fcc95a13-c291-47e6-b48d-8de0ea25d342  alt="LinkedIn Logo" width="20" />

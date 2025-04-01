@@ -7,7 +7,7 @@ This project involves building a **SQL Server-based Data Warehouse** with an **E
 - **CRM System:** Provides CSV files with:
   - `sales_details` (transactional data)
   - `customer_info` (customer details)
-  - `product_info` (product metadata)
+  - `product_info` (product details)
 - **ERP System:** Provides three additional CSV files with customer and product information.
 - **CSV File Characteristics:**
   - Comma-delimited
@@ -54,7 +54,7 @@ Many transformation and cleansing technique were used in the project:
 - Data aggregation
 - Data integration
 
-All the transformation are detailed in doc/data_transformation.md
+All the transformation are detailed in [doc/data_transformation.md](doc/data_transformation.md)
 
 
 ## 📊 Data Model
@@ -69,11 +69,12 @@ All the transformation are detailed in doc/data_transformation.md
 
 
 ## 📝 Documentation & Project Management
-- **Data Architecture Diagrams** 📌 : doc/data_architecture.png
-- **Data Flow Diagrams** 🔄 : doc/data_flow.png
-- **Data Catalog** 📚 : doc/data_catalog.md
-- **Naming Conventions** (`snake_case` for consistency) 🏷️ : doc/naming_convention.md
-- **Conceptual Model & Star Schema Design** 🌟 : doc/star_model.png
+- **Data Architecture Diagrams** 📌 : [doc/data_architecture.png](doc/data_architecture.png)
+- **Data Flow Diagrams** 🔄 : [doc/data_flow.png](doc/data_flow.png)
+- **Data Catalog** 📚 : [doc/data_catalog.md](doc/data_catalog.md)
+- **Naming Conventions** (`snake_case` for consistency) 🏷️ : [doc/naming_convention.md](doc/naming_convention.md)
+- **Conceptual Model & Star Schema Design** 🌟 : [doc/star_model.png](doc/star_model.png)
+
 The project was managed using an **Agile methodology** with **Notion** ([link for the Notion page](https://mewing-pyjama-a13.notion.site/SQL-Server-Data-Warehouse-Project-1be923a250a58037b793ca6330c2fd57)) 
 
 ## 🚀 Execution & Automation

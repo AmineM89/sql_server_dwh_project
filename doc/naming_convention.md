@@ -45,9 +45,9 @@
   - **Example**: `customer_key` → Name of the surrogate key in the `dim_customer` table.
 
 ### Metadata Columns
-- All metadata columns must start with the prefix `_dwh`.
-- Format: `_dwh_<column_name>`
-- **Example**: `_dwh_load_date`
+- All metadata columns must start with the prefix `dwh_`.
+- Format: `dwh_<column_name>`
+- **Example**: `dwh_load_date`
 
 ## Stored Procedure Naming Convention
 - Add prefix `load_` for each layer.

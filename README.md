@@ -13,6 +13,11 @@ This project involves building a **SQL Server-based Data Warehouse** with an **E
   - Comma-delimited
   - Includes headers
   - No schema enforcement at the source
+ 
+## 🚚 Data Loading Process
+The data loading process is implemented using a **full load approach**. In this method:
+- **Data is truncated** before each load, ensuring that only the latest data is kept in the data warehouse.
+- **New data is inserted** into the fact and dimension tables after each ETL cycle.
 
 ## 🏗️ Architecture
 The project follows the **Medallion Architecture**, structured as:

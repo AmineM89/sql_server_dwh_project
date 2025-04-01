@@ -4,7 +4,7 @@
 
 ### cust_info Table
 
-#### Removing duplicates in `cst_id` column
+#### Handeling duplicates in `cst_id` column
 
 | cst_id | cst_firstname | cst_lastname | cst_marital_status | cst_gndr | cst_create_date |
 |--------|--------------|-------------|--------------------|---------|----------------|
@@ -22,7 +22,7 @@
 
 - Last created record is the most complete → Keep the `cst_id` with the latest `cst_create_date`.
 
-#### Cleaning NULL values in `cst_id`
+#### Handeling missiong values & filtering in `cst_id` column
 
 | cst_id | cst_key  | cst_firstname | cst_lastname | cst_marital_status | cst_gndr | cst_create_date |
 |--------|---------|--------------|-------------|--------------------|---------|----------------|
@@ -31,19 +31,19 @@
 | NULL   | 13451235| NULL         | NULL        | NULL               | NULL    | NULL          |
 | NULL   | A01Ass  | NULL         | NULL        | NULL               | NULL    | NULL          |
 
-- `cst_key` not present in the remaining sources.
+- `cst_key` not present in the remaining sources
 - No data enrichment possible.
+→ Drop NULL values.
 
-**Solution:**
-- Drop NULL values.
-
-### Change data type in `cst_create_date`
+### Date data type casting for `cst_create_date` column
 - Cast `cst_create_date` column into date format.
 
-### Normalization of `cst_firstname` & `cst_lastname`
+### Handeling unwanted spaces in `cst_firstname` & `cst_lastname`
 - Remove misplaced spaces in both columns.
 
-### Standardization of `cst_marital_status` & `cst_gndr`
+### Standardization of `cst_marital_status` & `cst_gndr` columns
+
+Distint values of `cst_gndr` & `cst_marital_status` columns:
 
 | cst_gndr | cst_marital_status |
 |----------|--------------------|
@@ -51,12 +51,12 @@
 | F        | NULL               |
 | M        | M                  |
 
-**Solution:**
-- `cst_gndr`:
+
+- `cst_gndr` standardization:
   - M → Male
   - F → Female
   - NULL → n/a
-- `cst_marital_status`:
+- `cst_marital_status` standardization:
   - S → Single
   - M → Married
   - NULL → n/a
@@ -72,11 +72,12 @@
 
 - Split `prd_key` into `cat_id` (first 5 characters) and `prd_key` (remaining characters).
 
-### Handling NULL values in `prd_cost`
+### Handling missing values in `prd_cost`
 - Replace NULL values with 0.
 
 ### Standardization of `prd_line`
 
+Distinct values of `prd_line`:
 | prd_line |
 |----------|
 | NULL     |
@@ -85,18 +86,18 @@
 | S        |
 | T        |
 
-**Solution:**
 - NULL → ‘Other’
 - M → ‘Mountain’
 - R → ‘Road’
 - S → ‘Sport’
 - T → ‘Touring’
 
-### Ensuring `prd_end_dt` > `prd_start_dt`
-- If `prd_key` is unique or last update → `prd_end_dt` should be NULL.
-- If multiple records exist → `prd_end_dt` should be the day before the next period starts.
+### Handeling unvalid values (when `prd_end_dt` < `prd_start_dt`)
+The historical data of the products are kept in the table `prd_info`, for handeling these unvalid value we procede as follows:
+- If `prd_key` is the last product update → `prd_end_dt` should be NULL.
+- If multiple records exist → `prd_end_dt` should be set to day before the next period starts.
 
-**Example:**
+**Example of correct `prd_end_dt` values:**
 
 | prd_key  | prd_cost | prd_line | prd_start_dt | prd_end_dt |
 |----------|---------|---------|-------------|------------|
@@ -106,19 +107,19 @@
 
 ## sales_details Table
 
-### Casting date format
+### Casting date data type
 - `sls_order_dt` contains invalid date formats (<8 characters) → Replace these values with NULL.
-- Apply the same transformation to other date columns.
+- Apply the same transformation to other date columns for precaussion.
 
-### Correcting sales metrics
+### Handeling unvalid values & derived columns in sales metrics 
 - `sls_sales` & `sls_price` contain NULLs and negative values.
 - Some `sls_sales` values do not match the formula:
   ```
   sls_sales = sls_quantity * sls_price
   ```
-  **Solution:**
-  - Replace incorrect `sls_sales` with `abs(sls_quantity * sls_price)`.
-  - Replace NULL and negative values of `sls_price` with `abs(sls_sales/sls_quantity)`.
+  
+  → Replace incorrect `sls_sales` with `abs(sls_quantity * sls_price)`.
+  → Replace NULL and negative values of `sls_price` with `abs(sls_sales/sls_quantity)`.
 
 ## ERP Source
 
@@ -145,10 +146,28 @@
 **Example:**
 - `NASAW00011000` → `AW00011000`
 
-### Birthdate Out of Range
+### Handeling unvalid values (Birthdate Out of Range)
 - Birthdates in 2025 or later are incorrect → Replace with NULL.
 
 ### GEN Standardization
 - `F` → `Female`
 - `M` → `Male`
-- NULL or empty → `n/a
+- NULL or empty values → `n/a
+
+## Integration of ERP source into CRM data
+
+When integrating ERP data into CRM data, we noticed some conflict between `cst_gndr` column from `crm_cust_info` and `GEN` columns from `erp_CUST_AZ12` as shown in the table below:
+
+|cst_gndr  |GEN      |
+|----------|---------|
+|Male      |Male     |
+|❌Male    |❌Female|
+|Male      |n/a      |
+|❌Female  |❌Male  |
+|Female     |Female  |
+|Female     |n/a     |
+|n/a        |Male    |
+|n/a        |Female  |
+|n/a        |n/a     |
+
+The master is the CRM system, so if there is a conflict between the two columns we select the `cst_gndr` value. The only integration from `GEN` column are when the value of `cst_gndr` is 'n/a'

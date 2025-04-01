@@ -1,3 +1,14 @@
+/*
+=======================================================================================
+Unit test for all transfomation applied in the silver layer
+=======================================================================================
+
+script purpose:
+	this script is structured cource then by table using comments, in each section we provide queries with the 
+	expected results to verify the data quality for each transformation
+*/
+
+
 --===================================================================
 --================ cst_cust_info val tests ==========================
 --===================================================================

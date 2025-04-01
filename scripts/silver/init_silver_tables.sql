@@ -1,3 +1,15 @@
+/*
+============================================================
+Initialize tables in the silver layer
+============================================================
+
+script purpose:
+	This script will create table keeping the same naming as the bronze layer, with some changes in some column types,
+	and some additional columns in prevision of the changes that will occur in the trasformation of the silver layer
+	dwh_create_date col is added as well as metadata column
+*/
+
+
 USE DataWarehouse;
 
 -- drop the table 'crm_cust_info' if it is already created in the silver layer

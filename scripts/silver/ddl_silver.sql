@@ -1,6 +1,6 @@
 /*
 ==============================================================================
-                           Loading silver Layer
+silver Layer loading stored procedure
 ==============================================================================
 
 purpose:
@@ -43,7 +43,7 @@ BEGIN
 		PRINT '>> Cleaning and inserting data into silver.crm_cust_info...';
 		-- bulk insert into crm_cust_info table from its corresponding csv file
 
-		WITH cte AS(
+		WITH cust_cte AS(
 			SELECT cst_id,
 				cst_key,
 				TRIM(cst_firstname) AS cst_firstname,
@@ -63,7 +63,7 @@ BEGIN
 				ROW_NUMBER() OVER(PARTITION BY(cst_id) ORDER BY cst_create_date DESC) as rn
 			FROM bronze.crm_cust_info
 			WHERE cst_id IS NOT NULL)
-		INSERT INTO silver.crm_cust_info
+		INSERT INTO silver.crm_cust_info(cst_id, cst_key, cst_firstname, cst_lastname, cst_marital_status, cst_gndr, cst_create_date)
 		SELECT cst_id,
 			cst_key,
 			cst_firstname,
@@ -71,7 +71,7 @@ BEGIN
 			cst_marital_status,
 			cst_gndr,
 			cst_create_date
-		FROM cte
+		FROM cust_cte
 		WHERE rn=1;
 
 		SELECT @end_time = GETDATE();
@@ -94,7 +94,7 @@ BEGIN
 		PRINT '>> Cleaning and inserting data into silver.crm_prd_info...';
 		-- loading data into silver.crm_prd_info table
 
-		INSERT INTO silver.crm_prd_info
+		INSERT INTO silver.crm_prd_info(prd_id, cat_id,prd_key,prd_nm,prd_cost,prd_line, prd_start_dt, prd_end_dt)
 		SELECT prd_id,
 			SUBSTRING(prd_key,1,5) AS cat_id,
 			SUBSTRING(prd_key,7,LEN(prd_key)) AS prd_key,
@@ -130,7 +130,7 @@ BEGIN
 		PRINT '>> Cleaning and inserting data into silver.crm_sales_details...';
 		-- loading data into silver.crm_sales_details table
 
-		INSERT INTO silver.crm_sales_details
+		INSERT INTO silver.crm_sales_details(sls_ord_num,sls_prd_key,sls_cust_id,sls_order_dt,sls_ship_dt,sls_due_dt,sls_sales,sls_quantity,sls_price)
 		SELECT sls_ord_num,
 			sls_prd_key,
 			sls_cust_id,
@@ -169,13 +169,12 @@ BEGIN
 		PRINT '>> Cleaning and inserting data into silver.erp_LOC_A101...';
 		-- loading data into silver.erp_LOC_A101 table
 
-		INSERT INTO silver.erp_LOC_A101
+		INSERT INTO silver.erp_LOC_A101(CID,CNTRY)
 		SELECT 
-			SUBSTRING(CID,1,2)+SUBSTRING(CID,4,LEN(CID)) AS CID,
+			REPLACE(CID,'-','') AS CID,
 			CASE
 				WHEN CNTRY='DE' THEN 'Germany'
-				WHEN CNTRY='USA' THEN 'United States'
-				WHEN CNTRY='US' THEN 'United States'
+				WHEN CNTRY IN ('USA','US') THEN 'United States'
 				WHEN CNTRY IS NULL OR CNTRY='' THEN 'n/a'
 				ELSE CNTRY
 			END AS CNTRY
@@ -197,9 +196,9 @@ BEGIN
 		PRINT '>> Cleaning and inserting data into silver.erp_PX_CAT_G1V2...';
 		-- loading data into silver.erp_PX_CAT_G1V2 table
 
-		INSERT INTO silver.erp_PX_CAT_G1V2
+		INSERT INTO silver.erp_PX_CAT_G1V2(ID,CAT,SUBCAT,MAINTENANCE)
 		SELECT
-			SUBSTRING(ID,1,2)+'-'+SUBSTRING(ID,4,LEN(ID)) AS ID,
+			REPLACE(ID,'_','-') AS ID,
 			CAT,
 			SUBCAT,
 			MAINTENANCE
@@ -222,10 +221,10 @@ BEGIN
 		PRINT '>> Cleaning and inserting data into silver.erp_CUST_AZ12...';
 		-- loading data into silver.erp_CUST_AZ12 table
 
-		INSERT INTO silver.erp_CUST_AZ12
+		INSERT INTO silver.erp_CUST_AZ12(CID,BDATE,GEN)
 		SELECT
 			CASE
-				WHEN LEN(CID)=13 THEN SUBSTRING(CID,4,LEN(CID))
+				WHEN CID LIKE 'NAS%' THEN SUBSTRING(CID,4,LEN(CID))
 				ELSE CID
 			END AS CID,
 			CASE
@@ -242,8 +241,9 @@ BEGIN
 		SELECT @end_time = GETDATE();
 		PRINT '';
 		PRINT '>> Excecution time : '+CAST(DATEDIFF(ms, @start_time,@end_time) AS VARCHAR)+' ms';
-
+		
 		PRINT '___________________________________________________________________________';
+
 
 		SELECT @global_end_time=GETDATE();
 		PRINT '';
@@ -253,7 +253,7 @@ BEGIN
 	END TRY
 	BEGIN CATCH
 		PRINT '===========================================================';
-		PRINT 'Error occured while loading the Bronze Layer';
+		PRINT 'Error occured while loading the silver Layer';
 		PRINT '===========================================================';
 		PRINT 'Error Message :' + ERROR_MESSAGE();
 		PRINT 'Error Number :' + CAST(ERROR_NUMBER() AS NVARCHAR);

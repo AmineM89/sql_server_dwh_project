@@ -86,6 +86,21 @@ The project was managed using an **Agile methodology** with **Notion** ([link fo
   - **SQL Server Agent** for scheduling.
 
 
+## ✅ Data Validation & Integrity Checks
+To ensure **data quality and integrity** after loading and transformation, **SQL validation test scripts** were implemented. These scripts verify:
+- Data completeness and consistency
+- Referential integrity between fact and dimension tables
+- Duplicates and anomalies detection
+- Data type mismatches
+- Business rule validation (e.g., sales amounts not being negative)
+
+These validation scripts can be found in the **`test/`** folder.
+
+## 🛠️ SQL Scripts & Setup
+- **Table Initialization & Schema Creation:** All SQL scripts for setting up the database schema and tables are stored in the **`scripts/`** folder.
+- **Stored Procedures:** Scripts for loading and transforming data are also stored in **`scripts/`**.
+
+
 ## ✅ Project Deliverables
 ✔️ Fully operational **ETL pipeline** in SQL Server.
 ✔️ **Star schema** for analytical reporting.

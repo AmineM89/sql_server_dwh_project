@@ -1,6 +1,17 @@
+/*
+=================================================
+Gold layer views creation
+=================================================
+script purpose:
+	Instead of loading the gold layer, this script generates a schema model using views: dim_customers, dim_products,
+	and fact_sales. It integrates data from multiple tables across different source systems (CRM & ERP).
+	Additionally, the script creates surrogate keys to facilitate joins and renames columns for better readability
+*/
+
+
 USE DataWarehouse
 GO
-CREATE VIEW gold.dim_cutormers AS
+CREATE VIEW gold.dim_customers AS
 SELECT
 	ROW_NUMBER() OVER(ORDER BY cst_create_date) AS customer_key,
 	ci.cst_id AS customer_id,
@@ -8,7 +19,7 @@ SELECT
 	ci.cst_firstname AS first_name,
 	ci.cst_lastname AS last_name,
 	CASE
-		WHEN ci.cst_gndr='n/a'THEN COALESCE(ca.GEN,'n/a')
+		WHEN ci.cst_gndr='n/a'THEN COALESCE(ca.GEN,'n/a') -- crm is master
 		ELSE ci.cst_gndr
 	END AS gender,
 	ci.cst_marital_status AS marital_status,
@@ -55,7 +66,7 @@ SELECT
 	sls_quantity AS quality,
 	sls_price AS unit_price
 FROM silver.crm_sales_details s
-LEFT JOIN gold.dim_cutormers c
+LEFT JOIN gold.dim_customers c
 ON c.customer_id = s.sls_cust_id
 LEFT JOIN gold.dim_products p
 ON p.product_number=s.sls_prd_key

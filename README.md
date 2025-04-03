@@ -1,4 +1,4 @@
-# SQL Server DATA WAREHOUSE PROJECT <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/microsoftsqlserver/microsoftsqlserver-plain.svg" height="40" alt="microsoftsqlserver logo"  />
+# <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/microsoftsqlserver/microsoftsqlserver-plain.svg" height="40" alt="microsoftsqlserver logo"  /> SQL Server DATA WAREHOUSE PROJECT
 
 ## 📌 Project Overview
 This project involves building a **SQL Server-based Data Warehouse** with an **ETL pipeline** to process and integrate data from ERP and CRM systems. The solution follows the **Medallion Architecture** (Bronze, Silver, Gold layers) and ensures optimized reporting with a **star schema**.
